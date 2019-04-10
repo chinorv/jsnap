@@ -1,0 +1,49 @@
+ # *************************************************************************
+# ===========================================
+# This is the playbook file for health checks# on VMX1.
+# ===========================================
+# *************************************************************************
+--- 
+ - hosts: 
+     - vmx1
+   roles:
+     - Juniper.junos  
+   connection: local
+   gather_facts: no  
+   vars:
+     login:
+       host: "{{ ansible_host }}"
+       #ssh_keyfile: "~/.ssh/id_rsa_ansible"
+       #port: 830
+       #username: "lab" 
+       #password: "lab123"
+     
+   tasks:
+     - name: Validate Netconf connectivity to vmx1
+       wait_for: host={{ ansible_host }} port=830 timeout=5      
+
+    - name: "Collect Pre Snapshot"
+      juniper_junos_jsnapy:
+        action: "snap_pre"
+        test_files: "testfiles/test_interfaces_ge.yml"
+
+    - name: "Collect Post Snapshot"
+      juniper_junos_jsnapy:
+        action: "snap_post"
+        test_files: "testfiles/test_interfaces_ge.yml"
+
+    - name: "Check after Pre and Post Snapshots"
+      juniper_junos_jsnapy:
+        action: "check"
+        test_files: "testfiles/test_interfaces_ge.yml"
+      register: test3
+    
+    - name: Verify all JSNAPy tests passed
+      assert:
+        that:
+          - "test3.|succeeded"
+          - "test3.passPercentage == 100"
+    - name: Print the full test response
+      debug:
+        var: test3
+

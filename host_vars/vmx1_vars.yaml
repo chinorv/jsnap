@@ -1,0 +1,26 @@
+# **************************************************************
+# ==============================================================
+# This is the VMX1 variable file for updating interface descriptions.
+# Fill out variable information. If there is none, leave the variable
+# blank.
+# # ================================================================
+# ****************************************************************
+interfaces:
+  - name: ge-0/0/4
+    owner: COX
+    circuit_id: 
+    far_end_device: RDC DUKEBBRJ02
+    far_end_interface: et-1/2/9
+    speed: 100
+    extd_desc: 
+  - name: ge-0/0/5
+    owner: COX
+    circuit_id: 
+    far_end_device: FACEBOOK
+    far_end_interface: AS4533
+    speed: 10
+    extd_desc: 10G TO FACEBOOK   
+
+
+  
+    
